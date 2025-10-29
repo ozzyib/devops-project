@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_IMAGE: ozzyib/devops-project
+  DOCKER_IMAGE: ozzyi/devops-project
   REGISTRY: docker.io
 
 jobs:
