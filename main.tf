@@ -15,7 +15,7 @@ terraform {
 # For local development, you can still use minikube separately
 resource "kubernetes_namespace" "devops_app" {
   count = var.create_k8s_resources ? 1 : 0
-  
+
   metadata {
     name = "devops-app"
     labels = {
@@ -27,7 +27,7 @@ resource "kubernetes_namespace" "devops_app" {
 
 resource "kubernetes_deployment" "flask_app" {
   count = var.create_k8s_resources ? 1 : 0
-  
+
   metadata {
     name      = "flask-app"
     namespace = kubernetes_namespace.devops_app[0].metadata[0].name
@@ -56,7 +56,7 @@ resource "kubernetes_deployment" "flask_app" {
         container {
           image = "${var.docker_image}:${var.image_tag}"
           name  = "flask-app"
-          
+
           port {
             container_port = 8080
           }
@@ -73,7 +73,7 @@ resource "kubernetes_deployment" "flask_app" {
 
 resource "kubernetes_service" "flask_app" {
   count = var.create_k8s_resources ? 1 : 0
-  
+
   metadata {
     name      = "flask-app-service"
     namespace = kubernetes_namespace.devops_app[0].metadata[0].name
