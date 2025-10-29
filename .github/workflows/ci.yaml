@@ -97,9 +97,8 @@ jobs:
       with:
         terraform_version: 1.5.7
     
-    # Skip format check for now - will add back once we debug the issue
-    # - name: Terraform Format Check
-    #   run: terraform fmt -check
+    - name: Terraform Format Check
+      run: terraform fmt -check
     
     - name: Terraform Init
       run: terraform init
