@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_IMAGE: thedevopsdue/devops-project
+  DOCKER_IMAGE: ozzyib/devops-project
   REGISTRY: docker.io
 
 jobs:
@@ -72,17 +72,16 @@ jobs:
         docker rm test-container
         echo "✅ Docker image test passed"
     
-    # Uncomment when you want to push to Docker Hub
-    # - name: Login to Docker Hub
-    #   uses: docker/login-action@v3
-    #   with:
-    #     username: ${{ secrets.DOCKER_USERNAME }}
-    #     password: ${{ secrets.DOCKER_PASSWORD }}
-    #     
-    # - name: Push Docker Image
-    #   run: |
-    #     docker push ${{ env.DOCKER_IMAGE }}:${{ env.SHORT_SHA }}
-    #     docker push ${{ env.DOCKER_IMAGE }}:latest
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: Push Docker Image
+      run: |
+        docker push ${{ env.DOCKER_IMAGE }}:${{ env.SHORT_SHA }}
+        docker push ${{ env.DOCKER_IMAGE }}:latest
 
   terraform:
     needs: [test, build_and_push]
