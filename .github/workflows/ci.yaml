@@ -107,6 +107,7 @@ jobs:
       run: terraform validate
     
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan -var="create_k8s_resources=false"
       env:
         TF_VAR_environment: "dev"
+        TF_VAR_create_k8s_resources: "false"

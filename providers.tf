@@ -1,6 +1,8 @@
+# Kubernetes provider configuration
+# For CI/CD: This will be skipped when create_k8s_resources = false
+# For local development: Configure this to point to your local cluster
 provider "kubernetes" {
-  host                   = minikube_cluster.minikube_docker.host
-  client_certificate     = minikube_cluster.minikube_docker.client_certificate
-  client_key             = minikube_cluster.minikube_docker.client_key
-  cluster_ca_certificate = minikube_cluster.minikube_docker.cluster_ca_certificate
+  # Only configure if we're actually creating resources
+  # In CI/CD, validation will work without cluster connection
+  config_path = var.create_k8s_resources ? "~/.kube/config" : null
 }
