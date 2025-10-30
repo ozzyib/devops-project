@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def get_current_time():
     current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    return f"🚀 DevOps Pipeline Test - Current time: {current_time}"
+    return f"🚀 DevOps Pipeline Test - Current time of the day: {current_time}"
 
 @app.route('/health')
 def health_check():
