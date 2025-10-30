@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: ozzyi/devops-project
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "9290f7a"
 
 imagePullSecrets: []
 nameOverride: ""
