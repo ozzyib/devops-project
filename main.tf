@@ -4,11 +4,31 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.38"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.10"
+    }
+    minikube = {
+      source  = "scott-the-programmer/minikube"
+      version = "~> 0.6"
+    }
     local = {
       source  = "hashicorp/local"
       version = "~> 2.1"
     }
   }
+}
+
+# Minikube cluster for local development
+resource "minikube_cluster" "minikube_docker" {
+  count = var.create_k8s_resources ? 1 : 0
+  
+  driver       = "docker"
+  cluster_name = "devops-project"
+  addons = [
+    "default-storageclass",
+    "storage-provisioner"
+  ]
 }
 
 # This is a sample Kubernetes configuration that can be validated in CI
@@ -21,6 +41,19 @@ resource "kubernetes_namespace" "devops_app" {
     labels = {
       environment = var.environment
       app         = "devops-project"
+    }
+  }
+}
+
+# ArgoCD namespace
+resource "kubernetes_namespace" "argocd" {
+  count = var.create_k8s_resources ? 1 : 0
+
+  metadata {
+    name = "argocd"
+    labels = {
+      name = "argocd"
+      app  = "argocd"
     }
   }
 }
@@ -102,4 +135,9 @@ output "namespace_name" {
 output "deployment_name" {
   description = "The name of the created Kubernetes deployment"
   value       = var.create_k8s_resources ? kubernetes_deployment.flask_app[0].metadata[0].name : "Not created (create_k8s_resources = false)"
+}
+
+output "argocd_namespace" {
+  description = "The name of the ArgoCD namespace"
+  value       = var.create_k8s_resources ? kubernetes_namespace.argocd[0].metadata[0].name : "Not created (create_k8s_resources = false)"
 }

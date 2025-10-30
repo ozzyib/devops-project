@@ -66,3 +66,8 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# ArgoCD CLI binaries
+argocd-darwin-*
+argocd-linux-*
+argocd-windows-*
