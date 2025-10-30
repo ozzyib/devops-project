@@ -2,7 +2,7 @@
 
 A complete DevOps demonstration project featuring a Python Flask application with full CI/CD pipeline, Infrastructure as Code, and GitOps deployment using ArgoCD. This project showcases modern DevOps practices with automated testing, containerization, infrastructure provisioning, and continuous deployment.
 
-[![CI/CD Pipeline](https://github.com/YOUR_USERNAME/devops-project/actions/workflows/ci.yaml/badge.svg)](https://github.com/YOUR_USERNAME/devops-project/actions)
+[![CI/CD Pipeline](https://github.com/ozzyib/devops-project/actions/workflows/ci.yaml/badge.svg)](https://github.com/ozzyib/devops-project/actions)
 [![Docker Image](https://img.shields.io/badge/docker-YOUR__USERNAME%2Fdevops--project-blue)](https://hub.docker.com/r/YOUR_USERNAME/devops-project)
 
 ## 🏗️ Architecture Overview
@@ -71,7 +71,7 @@ Before getting started, you'll need to configure your Docker Hub credentials for
 ### 1. Clone & Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/devops-project.git
+git clone https://github.com/ozzyib/devops-project.git
 cd devops-project
 
 # Install Python dependencies (for local development)
@@ -122,6 +122,9 @@ kubectl port-forward service/argocd-server -n argocd 8081:443
 # Access ArgoCD UI at https://localhost:8081
 # Username: admin
 # Password: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+> **🔒 Security Note**: This password is for local development only. Each deployment generates a unique password that's only accessible on your local machine (localhost). For production deployments, always change the default password and implement proper RBAC.
 ```
 
 ## 🔄 CI/CD Pipeline
@@ -217,12 +220,19 @@ kubectl logs -n argocd deployment/argocd-application-controller
 
 ## 🚀 Production Considerations
 
-- **Security**: Update ArgoCD admin password, use RBAC
-- **Monitoring**: Add Prometheus, Grafana for observability  
+### 🔒 **Security (Critical)**
+- **Change Default Passwords**: Update ArgoCD admin password immediately
+- **RBAC**: Implement Role-Based Access Control for ArgoCD and Kubernetes
+- **TLS/SSL**: Enable proper TLS certificates (not self-signed)
+- **Network Policies**: Restrict pod-to-pod communication
+- **Secret Management**: Use HashiCorp Vault, AWS Secrets Manager, or sealed-secrets
+
+### 📊 **Observability & Operations**
+- **Monitoring**: Add Prometheus, Grafana for metrics and alerting
 - **Logging**: Implement centralized logging (ELK/EFK stack)
-- **Secrets**: Use Kubernetes secrets or external secret management
+- **Tracing**: Add distributed tracing with Jaeger or Zipkin
 - **Scaling**: Configure HPA (Horizontal Pod Autoscaler)
-- **Backup**: Implement etcd backups and disaster recovery
+- **Backup**: Implement etcd backups and disaster recovery plans
 
 ## 🤝 Contributing
 
