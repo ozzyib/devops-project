@@ -82,17 +82,12 @@ jobs:
       run: |
         docker push ${{ env.DOCKER_IMAGE }}:${{ env.SHORT_SHA }}
         docker push ${{ env.DOCKER_IMAGE }}:latest
-    - name: Configure Git Author 
+    - name: Docker Build Summary
       run: |
-        git config --local user.email "hello@ozzyi.com"
-        git config --local user.name "ozzyi0b" 
-    - name: Update Helm Chart with new image tag
-      run: |
-        sed -i.bak "s|tag: .*|tag: \"${{ env.SHORT_SHA }}\"|g" devops-project-time/values.yaml
-        rm devops-project-time/values.yaml.bak
-        git add devops-project-time/values.yaml
-        git commit -m "Update Helm chart with new image tag ${{ env.SHORT_SHA }}"
-        git push
+        echo "✅ Docker images built and pushed successfully:"
+        echo "   - ${{ env.DOCKER_IMAGE }}:${{ env.SHORT_SHA }}"
+        echo "   - ${{ env.DOCKER_IMAGE }}:latest"
+        echo "   - Image ready for ArgoCD deployment"
 
 
   terraform:
