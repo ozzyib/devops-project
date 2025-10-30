@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "terraform-config.name" -}}
+{{- define "devops-app.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "terraform-config.fullname" -}}
+{{- define "devops-app.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "terraform-config.chart" -}}
+{{- define "devops-app.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "terraform-config.labels" -}}
-helm.sh/chart: {{ include "terraform-config.chart" . }}
-{{ include "terraform-config.selectorLabels" . }}
+{{- define "devops-app.labels" -}}
+helm.sh/chart: {{ include "devops-app.chart" . }}
+{{ include "devops-app.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "terraform-config.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "terraform-config.name" . }}
+{{- define "devops-app.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "devops-app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "terraform-config.serviceAccountName" -}}
+{{- define "devops-app.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "terraform-config.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "devops-app.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

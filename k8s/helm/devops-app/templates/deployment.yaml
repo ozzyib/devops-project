@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "terraform-config.fullname" . }}
+  name: {{ include "devops-app.fullname" . }}
   labels:
-    {{- include "terraform-config.labels" . | nindent 4 }}
+    {{- include "devops-app.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "terraform-config.selectorLabels" . | nindent 6 }}
+      {{- include "devops-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "terraform-config.selectorLabels" . | nindent 8 }}
+        {{- include "devops-app.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "terraform-config.serviceAccountName" . }}
+      serviceAccountName: {{ include "devops-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

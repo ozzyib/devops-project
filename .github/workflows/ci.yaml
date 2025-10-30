@@ -34,7 +34,7 @@ jobs:
       run: |
         python -c "
         import sys
-        sys.path.append('.')
+        sys.path.append('src')
         from app import app
         with app.test_client() as client:
             response = client.get('/')
@@ -60,8 +60,8 @@ jobs:
       
     - name: Build Docker Image
       run: |
-        docker build -t ${{ env.DOCKER_IMAGE }}:${{ env.SHORT_SHA }} .
-        docker build -t ${{ env.DOCKER_IMAGE }}:latest .
+        docker build -t ${{ env.DOCKER_IMAGE }}:${{ env.SHORT_SHA }} -f src/Dockerfile src/
+        docker build -t ${{ env.DOCKER_IMAGE }}:latest -f src/Dockerfile src/
         
     - name: Test Docker Image
       run: |
@@ -89,9 +89,9 @@ jobs:
     
     - name: Update Helm Chart with new image tag
       run: |
-        sed -i.bak "s|tag: .*|tag: \"${{ env.SHORT_SHA }}\"|g" terraform-config/values.yaml
-        rm terraform-config/values.yaml.bak
-        git add terraform-config/values.yaml
+        sed -i.bak "s|tag: .*|tag: \"${{ env.SHORT_SHA }}\"|g" k8s/helm/devops-app/values.yaml
+        rm k8s/helm/devops-app/values.yaml.bak
+        git add k8s/helm/devops-app/values.yaml
         git commit -m "Update Helm chart with new image tag ${{ env.SHORT_SHA }}"
         git push
 
@@ -111,16 +111,24 @@ jobs:
         terraform_version: 1.5.7
     
     - name: Terraform Format Check
-      run: terraform fmt -check
+      run: |
+        cd infrastructure
+        terraform fmt -check
     
     - name: Terraform Init
-      run: terraform init
+      run: |
+        cd infrastructure
+        terraform init
     
     - name: Terraform Validate
-      run: terraform validate
+      run: |
+        cd infrastructure
+        terraform validate
     
     - name: Terraform Plan
-      run: terraform plan -var="create_k8s_resources=false"
+      run: |
+        cd infrastructure
+        terraform plan -var="create_k8s_resources=false"
       env:
         TF_VAR_environment: "dev"
         TF_VAR_create_k8s_resources: "false"

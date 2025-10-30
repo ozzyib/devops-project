@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: "https://github.com/ozzyib/devops-project"
     targetRevision: HEAD
-    path: terraform-config
+    path: k8s/helm/devops-app
   destination:
     server: "https://kubernetes.default.svc"
     namespace: default

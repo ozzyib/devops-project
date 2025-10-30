@@ -1,10 +1,15 @@
 # Terraform
 .terraform/
-.terraform.lock.hcl
+infrastructure/.terraform/
+infrastructure/.terraform.lock.hcl
 *.tfstate
 *.tfstate.*
+infrastructure/*.tfstate
+infrastructure/*.tfstate.*
 *.tfvars
 *.tfvars.json
+infrastructure/*.tfvars
+infrastructure/*.tfvars.json
 .terraformrc
 terraform.rc
 *.tfplan
