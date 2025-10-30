@@ -22,7 +22,7 @@ terraform {
 # Minikube cluster for local development
 resource "minikube_cluster" "minikube_docker" {
   count = var.create_k8s_resources ? 1 : 0
-  
+
   driver       = "docker"
   cluster_name = "devops-project"
   addons = [

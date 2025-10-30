@@ -9,9 +9,9 @@ provider "minikube" {
 provider "kubernetes" {
   # Use default kubectl config when creating resources
   # Skip cluster connection when create_k8s_resources = false for CI/CD validation
-  config_path = var.create_k8s_resources ? "~/.kube/config" : null
+  config_path    = var.create_k8s_resources ? "~/.kube/config" : null
   config_context = var.create_k8s_resources ? "devops-project" : null
-  
+
   # Ignore missing context during initial plan
   ignore_annotations = []
 }
@@ -19,7 +19,7 @@ provider "kubernetes" {
 # Helm provider configuration
 provider "helm" {
   kubernetes {
-    config_path = var.create_k8s_resources ? "~/.kube/config" : null
+    config_path    = var.create_k8s_resources ? "~/.kube/config" : null
     config_context = var.create_k8s_resources ? "devops-project" : null
   }
 }
